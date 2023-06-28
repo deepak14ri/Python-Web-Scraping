@@ -1,4 +1,3 @@
-# Python-Web-Scraping
-# # Basic Libraries
+# Basic Libraries
 `pip install requests` <br/>
 `pip install beautifulsoup4`
