@@ -1,0 +1,107 @@
+
+import requests
+
+# Example: Python requests Response Object
+
+# r = requests.get("https://www.geeksforgeeks.org/python-programming-language/")
+# print(r)
+# print(r.content)
+
+# ---------------
+# Example: Python BeautifulSoup Parsing HTML
+
+from bs4 import BeautifulSoup
+
+r = requests.get("https://www.geeksforgeeks.org/python-programming-language/")
+soup = BeautifulSoup(r.content, 'html.parser')
+# print(soup)
+# print(soup.prettify())
+# print(soup.title)
+# print(soup.title.name)
+# print(soup.title.parent.name)
+
+# ---------------
+# Finding Elements by class
+
+s = soup.find('div', class_='entry-content')
+content = s.find_all('p')
+print(content)
+
+# ---------------
+# Finding Elements by ID
+s = soup.find('div', id='main')
+leftbar = s.find('ul', class_='leftBarList')
+content = leftbar.find_all('li')
+print(content)
+
+# ---------------
+# Finding Elements by Tags
+
+# lines = s.find_all('p')
+ 
+# for line in lines:
+#     print(line.text)
+
+# ---------------
+# Example: Python BeautifulSoup Extracting Links
+# find all the anchor tags with "href"
+# for link in soup.find_all('a'):
+#     print(link.get('href'))
+
+# ---------------
+# Example: Python BeautifulSoup Extract Image 
+
+# images_list = []
+ 
+# images = soup.select('img')
+# for image in images:
+#     src = image.get('src')
+#     alt = image.get('alt')
+#     images_list.append({"src": src, "alt": alt})
+     
+# for image in images_list:
+#     print(image)
+
+# ---------------
+# Example 1: Looping through the page numbers 
+
+# import requests
+# from bs4 import BeautifulSoup as bs
+
+# URL = 'https://www.geeksforgeeks.org/page/1/'
+
+# req = requests.get(URL)
+# soup = bs(req.text, 'html.parser')
+
+# titles = soup.find_all('div',attrs = {'class','head'})
+
+# print(titles[4].text)
+
+# ---------------
+# Example: Python BeautifulSoup saving to CSV
+
+import requests
+from bs4 import BeautifulSoup as bs
+import csv
+
+URL = 'https://www.geeksforgeeks.org/page/'
+
+soup = bs(req.text, 'html.parser')
+
+titles = soup.find_all('div', attrs={'class', 'head'})
+titles_list = []
+
+count = 1
+for title in titles:
+	d = {}
+	d['Title Number'] = f'Title {count}'
+	d['Title Name'] = title.text
+	count += 1
+	titles_list.append(d)
+
+filename = 'titles.csv'
+with open(filename, 'w', newline='') as f:
+	w = csv.DictWriter(f,['Title Number','Title Name'])
+	w.writeheader()
+	
+	w.writerows(titles_list)
